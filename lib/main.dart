@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import './ miscFiles/routeNames.dart';
+import './miscFiles/routeNames.dart';
 
 
-import './widget/meals_screen.dart';
-import './categories_screen.dart';
+import './screen/meals_screen.dart';
+import './screen/categories_screen.dart';
 
 void main() => runApp(MyApp());
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../ miscFiles/routeNames.dart';
+import '../miscFiles/routeNames.dart';
 
 // import '../widget/meals_screen.dart';
 
