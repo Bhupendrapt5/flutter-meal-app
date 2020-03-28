@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:my_meal_app/screen/meal_detail_screen.dart';
 import './miscFiles/routeNames.dart';
-
 
 import './screen/meals_screen.dart';
 import './screen/categories_screen.dart';
@@ -9,15 +9,19 @@ void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+
+
+
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Make Meal',
       theme: ThemeData(
           primarySwatch: Colors.indigo,
           accentColor: Colors.lightBlue,
-          canvasColor: Color.fromRGBO(255, 254, 230, 1),
+          canvasColor: Color.fromRGBO(255, 254, 240, 1),
           fontFamily: "RobotoCondensed",
           textTheme: ThemeData.light().textTheme.copyWith(
                 body1: TextStyle(
@@ -27,16 +31,34 @@ class MyApp extends StatelessWidget {
                   color: Color.fromRGBO(20, 51, 51, 1),
                 ),
                 title: TextStyle(
-                  fontFamily: 'Raleway',
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold
-                ),
+                    fontFamily: 'Raleway',
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
               )),
       // home: CategoriesScreen(),
       routes: {
+        RouteNames.homeScreen: (ctx) => CategoriesScreen(),
+        RouteNames.mealScreen: (ctx) => MealsScreen(),
+        RouteNames.mealDeatailScreen: (ctx) => MealDetailScreen()
+      },
+      onGenerateRoute: (settings) {
+        //It takes a function which executes for any named navigation (=pushNamed())
+        //for which no registered route was found in the route table. it should return a
+        //navigation action (MaterialPageRoute()) in onGenerationRoute.
+    
 
-        RouteNames.homeScreen : (ctx) => CategoriesScreen(),
-        RouteNames.mealScreen : (ctx) => MealsScreen()
+        print(settings.arguments);
+        return MaterialPageRoute(
+          builder: (ctx) => CategoriesScreen(),
+        );
+      },
+      onUnknownRoute: (settings){
+        //onUnknownRoute work as 404 error route
+        //
+
+        return MaterialPageRoute(
+          builder: (ctx) => CategoriesScreen(),
+        );
       },
     );
   }
