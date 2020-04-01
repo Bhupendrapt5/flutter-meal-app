@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_meal_app/screen/bottom_tabs_screen.dart';
+import 'package:my_meal_app/screen/filter_screen.dart';
 
 
 import './screen/meal_detail_screen.dart';
@@ -43,7 +44,8 @@ class MyApp extends StatelessWidget {
       routes: {
         RouteNames.homeScreen: (ctx) => BottomTabsScreen(),
         RouteNames.mealScreen: (ctx) => MealsScreen(),
-        RouteNames.mealDeatailScreen: (ctx) => MealDetailScreen()
+        RouteNames.mealDeatailScreen: (ctx) => MealDetailScreen(),
+        RouteNames.filterScreen : (ctx) => FilterScreen(),
       },
       onGenerateRoute: (settings) {
         //It takes a function which executes for any named navigation (=pushNamed())
