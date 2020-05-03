@@ -4,6 +4,8 @@ import '../test_data.dart';
 import '../widget/category_item.dart';
 
 class CategoriesScreen extends StatelessWidget {
+
+  
   @override
   Widget build(BuildContext context) {
     return GridView(

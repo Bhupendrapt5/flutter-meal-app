@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:my_meal_app/miscFiles/routeNames.dart';
 
 class DrawerContent extends StatelessWidget {
+
+  
   Widget _myListTile(String title, IconData icon, BuildContext context, Function tapHandler) {
     return ListTile(
       leading: Icon(

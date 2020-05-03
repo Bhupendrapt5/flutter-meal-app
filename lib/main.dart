@@ -1,24 +1,79 @@
 import 'package:flutter/material.dart';
-import 'package:my_meal_app/screen/bottom_tabs_screen.dart';
-import 'package:my_meal_app/screen/filter_screen.dart';
 
-
+import './models/meal.dart';
+import './screen/bottom_tabs_screen.dart';
+import './screen/filter_screen.dart';
+import './test_data.dart';
 import './screen/meal_detail_screen.dart';
-import './screen/tabs_screen.dart';
 import './screen/meals_screen.dart';
 import './screen/categories_screen.dart';
 import './miscFiles/routeNames.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   // This widget is the root of your application.
 
+  @override
+  _MyAppState createState() => _MyAppState();
+}
 
+class _MyAppState extends State<MyApp> {
+  Map<String, bool> _filters = {
+    'gluten': false,
+    'vegetarian': false,
+    'vegan': false,
+  };
+
+  List<Meal> _availableMeals = DUMMY_MEALS;
+  List<Meal> _favoriteMeals = [];
+
+  void _toggleFavorite(String mealId) {
+    final existingMealId =
+        _favoriteMeals.indexWhere((meal) => meal.id == mealId);
+
+    if (existingMealId >= 0) {
+      setState(() {
+        _favoriteMeals.removeAt(existingMealId);
+      });
+    } else {
+      setState(() {
+        _favoriteMeals.add(
+          DUMMY_MEALS.firstWhere((element) => element.id == mealId),
+        );
+      });
+    }
+  }
+
+  bool _isFavoriteMeal(String mealId) {
+    return _favoriteMeals.any((meal) => meal.id == mealId);
+  }
+
+  void _setFilter(Map<String, bool> filterData) {
+    setState(() {
+      _filters = filterData;
+
+      _availableMeals = DUMMY_MEALS.where((meal) {
+        //...
+        if (_filters['gluten'] && !meal.isGlutenFree) {
+          return false;
+        }
+        //...
+        if (_filters['vegetarian'] && !meal.isVegetarian) {
+          return false;
+        }
+        //...
+        if (_filters['vegan'] && !meal.isVegan) {
+          return false;
+        }
+
+        return true;
+      }).toList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Make Meal',
@@ -28,37 +83,42 @@ class MyApp extends StatelessWidget {
           canvasColor: Color.fromRGBO(255, 254, 240, 1),
           fontFamily: "RobotoCondensed",
           textTheme: ThemeData.light().textTheme.copyWith(
-                body1: TextStyle(
+                bodyText1: TextStyle(
                   color: Color.fromRGBO(20, 51, 51, 1),
                 ),
-                body2: TextStyle(
+                bodyText2: TextStyle(
                   color: Color.fromRGBO(20, 51, 51, 1),
                 ),
-                title: TextStyle(
+                headline6: TextStyle(
                     fontFamily: 'Raleway',
                     fontSize: 20,
                     fontWeight: FontWeight.bold),
               )),
       // home: CategoriesScreen(),
-      initialRoute: "/",  //"/" is default route
+      initialRoute: "/", //"/" is default route
       routes: {
-        RouteNames.homeScreen: (ctx) => BottomTabsScreen(),
-        RouteNames.mealScreen: (ctx) => MealsScreen(),
-        RouteNames.mealDeatailScreen: (ctx) => MealDetailScreen(),
-        RouteNames.filterScreen : (ctx) => FilterScreen(),
+        RouteNames.homeScreen: (ctx) => BottomTabsScreen(
+              favoriteMeals: _favoriteMeals,
+            ),
+        RouteNames.mealScreen: (ctx) => MealsScreen(_availableMeals),
+        RouteNames.mealDeatailScreen: (ctx) => MealDetailScreen(
+              togleFavorite: _toggleFavorite,
+              isFavoriteMeal: _isFavoriteMeal,
+            ),
+        RouteNames.filterScreen: (ctx) => FilterScreen(_filters, _setFilter),
+        RouteNames.categoriesScreen: (ctx) => CategoriesScreen(),
       },
       onGenerateRoute: (settings) {
         //It takes a function which executes for any named navigation (=pushNamed())
         //for which no registered route was found in the route table. it should return a
         //navigation action (MaterialPageRoute()) in onGenerationRoute.
-    
 
         print(settings.arguments);
         return MaterialPageRoute(
           builder: (ctx) => CategoriesScreen(),
         );
       },
-      onUnknownRoute: (settings){
+      onUnknownRoute: (settings) {
         //onUnknownRoute work as 404 error route
         //
 
@@ -69,26 +129,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-// class MyHomePage extends StatefulWidget {
-
-//   @override
-//   _MyHomePageState createState() => _MyHomePageState();
-// }
-
-// class _MyHomePageState extends State<MyHomePage> {
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         // Here we take the value from the MyHomePage object that was created by
-//         // the App.build method, and use it to set our appbar title.
-//         title: Text('My Meals'),
-//       ),
-//       body: Center(
-//         child: Text('Navigaton Time'),
-//       ),
-//     );
-//   }
-// }

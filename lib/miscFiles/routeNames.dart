@@ -5,5 +5,6 @@ class RouteNames{
   static const String homeScreen = '/';
   static const String mealDeatailScreen = '/meal_detail_screen';
   static const String filterScreen = '/filter_screen';
+  static const String categoriesScreen = '/category_screen';
 
 }

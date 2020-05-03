@@ -3,12 +3,21 @@ import 'package:flutter/material.dart';
 import '../test_data.dart';
 
 class MealDetailScreen extends StatelessWidget {
+  final Function togleFavorite;
+  final Function isFavoriteMeal;
+
+  MealDetailScreen({
+    Key key,
+    this.togleFavorite,
+    this.isFavoriteMeal,
+  }) : super(key: key);
+
   Widget sectionTitle(BuildContext context, String title) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
       child: Text(
         title,
-        style: Theme.of(context).textTheme.title,
+        style: Theme.of(context).textTheme.headline6,
       ),
     );
   }
@@ -19,8 +28,8 @@ class MealDetailScreen extends StatelessWidget {
           color: Colors.white,
           border: Border.all(color: Colors.grey),
           borderRadius: BorderRadius.circular(20)),
-      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8 ),
-      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5 ),
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
       height: MediaQuery.of(context).size.height * 0.25,
       width: MediaQuery.of(context).size.width,
       child: childWidget,
@@ -48,7 +57,7 @@ class MealDetailScreen extends StatelessWidget {
           ),
           Expanded(
             child: SafeArea(
-                          child: SingleChildScrollView(
+              child: SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
                     sectionTitle(context, "Ingredients"),
@@ -93,8 +102,12 @@ class MealDetailScreen extends StatelessWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.of(context).pop(_mealId),
-      child: Icon(Icons.delete),),
+        onPressed: () => togleFavorite(_mealId),
+        child: Icon(
+          isFavoriteMeal(_mealId) 
+          ? Icons.star : Icons.star_border,
+        ),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
     );
   }
